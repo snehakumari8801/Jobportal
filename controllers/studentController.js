@@ -49,7 +49,6 @@ const registerStudent = async (req, res) => {
 const loginStudent = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email)
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
@@ -114,7 +113,6 @@ const suggestedJobs = async (req, res) => {
     // Flatten the skills array if it's a double array (array inside an array)
     const skills = student.skills.flat();
 
-    console.log(skills); // Check if skills are correctly flattened
 
     const jobs = await Job.find({
       $or: [
@@ -128,7 +126,6 @@ const suggestedJobs = async (req, res) => {
       ],
     }).sort({ createdAt: -1 });
 
-    console.log(jobs)
 
     res.json(jobs);
   } catch (error) {

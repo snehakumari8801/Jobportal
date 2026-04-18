@@ -81,7 +81,6 @@ const loginEmployer = async (req, res) => {
 // =========================
 const createJob = async (req, res) => {
   try {
-    // console.log(req.employer._id)
     const { title, description, requiredSkills, requiredEducation } = req.body;
 
     const job = await Job.create({
@@ -92,7 +91,6 @@ const createJob = async (req, res) => {
       employerId: req._id,
     });
 
-    console.log("Created Job ", job)
 
     // 🔥 FIND MATCHING STUDENTS
     const matchedStudents = await Student.find({
@@ -102,7 +100,6 @@ const createJob = async (req, res) => {
       ],
     });
 
-    console.log("Matched --", matchedStudents)
     // 🔔 CREATE NOTIFICATIONS (DB) WITH TYPE FIX
     const notifications = matchedStudents.map((student) => ({
       studentId: student._id,
@@ -166,7 +163,6 @@ const getMyJobs = async (req, res) => {
 const getJobById = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
-    console.log(job)
 
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
@@ -187,7 +183,6 @@ const getJobApplicants = async (req, res) => {
   try {
     let jobId = req.params.jobId;
     jobId = new mongoose.Types.ObjectId(jobId);
-    // console.log(jobId)
     const job = await Job.findById(jobId)
       .populate("applicants", "name email skills education");
 
@@ -304,7 +299,6 @@ const getEmployerNotifications = async (req, res) => {
     })
       .sort({ createdAt: -1 })
       .lean();
-    // console.log(notifications)
 
 
     return res.json(notifications);
@@ -341,7 +335,6 @@ const getApplication = async (req, res) => {
     jobId = new mongoose.Types.ObjectId(jobId);
     studentId = new mongoose.Types.ObjectId(studentId);
 
-    console.log(jobId, studentId)
 
     // STEP 1: get job
     const job = await Job.findById(jobId);
@@ -350,7 +343,6 @@ const getApplication = async (req, res) => {
       return res.status(404).json({ message: "Job not found" });
     }
 
-    console.log(job)
 
     // STEP 2: check if student applied
     const isApplicant = job.applicants.some(

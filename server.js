@@ -8,11 +8,11 @@ const studentRoutes = require("./routes/studentRoutes");
 const employerRoutes = require("./routes/employerRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const connectDB = require("./config/db");
+const app = express();
 const server = http.createServer(app);
 const path = require("path");
 
 
-const app = express();
 
 connectDB();
 

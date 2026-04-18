@@ -1,18 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const Job = require("../models/Job");
 const Student = require("../models/Student");
 const Employer = require("../models/Employer");
@@ -27,7 +13,6 @@ const createJob = async (req, res) => {
     const { title, description, requiredSkills, requiredEducation, github, linkedin, portfolio } = req.body;
     const resume = req.file || req.files;
 
-    // console.log(github,linkedin,resume)
 
     const job = await Job.create({
       title,
@@ -42,11 +27,6 @@ const createJob = async (req, res) => {
     });
 
 
-    // console.log( title,
-    //   description,
-    //   requiredSkills,
-    //   requiredEducation,
-    // )
     const matchedStudents = await Student.find({
       $or: [
         { skills: { $in: requiredSkills } },
@@ -182,7 +162,6 @@ const deleteJob = async (req, res) => {
 // ===============================
 const getEmployerJobs = async (req, res) => {
   try {
-    console.log("call")
     const jobs = await Job.find({ employerId: req.employer._id }).sort({ _id: -1 });
     res.json(jobs);
   } catch (err) {
@@ -196,7 +175,6 @@ const getEmployerJobs = async (req, res) => {
 // ===============================
 const getApplicants = async (req, res) => {
   try {
-    console.log(req.params.jobId)
     const job = await Job.findById(req.params.jobId)
       .populate("applicants", "name email skills education");
 
